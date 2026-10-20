@@ -1,7 +1,0 @@
-[
-  {"id": "n1", "title": "Why evals come before prompts", "body": "Write 20 test prompts first and run them on every change. If you cannot measure a regression you cannot ship a prompt change.", "tags": ["evals", "llm"]},
-  {"id": "n2", "title": "MCP tools should be small and typed", "body": "Prefer several narrow tools with typed arguments over one tool that takes a free-form string. The schema is the contract the model sees.", "tags": ["mcp", "tools"]},
-  {"id": "n3", "title": "RAG: hybrid beats pure vector", "body": "Combining keyword and vector search with a reranker usually retrieves better than vector search alone, especially for names and codes.", "tags": ["rag", "search"]},
-  {"id": "n4", "title": "Trace every agent run", "body": "Record each step with latency and token counts. A run you cannot replay is a run you cannot debug.", "tags": ["observability", "agents"]},
-  {"id": "n5", "title": "Staged rollouts for prompt changes", "body": "Ship a prompt change to a small slice first, compare against the baseline, then widen. Treat prompts like code.", "tags": ["evals", "rollout"]}
-]

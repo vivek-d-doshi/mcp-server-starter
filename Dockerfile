@@ -6,11 +6,9 @@ COPY pyproject.toml README.md ./
 COPY src ./src
 RUN pip install .
 
-# Run as a non-root user; notes persist only if /data is mounted and NOTES_FILE points into it.
-RUN useradd --create-home app && mkdir /data && chown app /data
+# Non-root. Mount the folder you want read read-only:  docker run -i --rm -v "$PWD:/data:ro" filelens --root /data
+RUN useradd --create-home app
 USER app
-ENV NOTES_FILE=/data/notes.json
 
 EXPOSE 8000
-# Default is stdio (what MCP clients launch). For HTTP: docker run -p 8000:8000 notes-mcp --transport streamable-http --host 0.0.0.0
-ENTRYPOINT ["python", "-m", "notes_mcp"]
+ENTRYPOINT ["filelens"]

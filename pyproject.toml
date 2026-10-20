@@ -1,23 +1,30 @@
 [project]
-name = "notes-mcp"
+name = "filelens-mcp"
 version = "0.1.0"
-description = "A small, typed, tested MCP server (and client example): search, read and add notes."
+description = "FileLens: a read-only, sandboxed file reader for AI assistants. Type-aware extraction and citable references over MCP."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["mcp>=2.3,<3"]
+dependencies = [
+  "mcp>=2.3,<3",
+  "pypdf>=5",
+  "python-docx>=1.1",
+  "openpyxl>=3.1",
+  "pyyaml>=6",
+]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.6"]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.6", "reportlab>=4"]
 
 [project.scripts]
-notes-mcp = "notes_mcp.__main__:main"
+filelens = "filelens.__main__:main"
+filelens-chat = "filelens.playground:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/notes_mcp"]
+packages = ["src/filelens"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -29,3 +36,4 @@ src = ["src", "tests", "examples"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]  # long prose in tool descriptions and messages is intentional
