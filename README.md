@@ -216,13 +216,25 @@ ollama pull <a-model-that-supports-tools>
 filelens-chat --model <that-model> --root ~/Documents/reports
 ```
 
+A real run with a local `gemma4:e4b` (a model that lists the `tools` capability in `ollama show`):
+
 ```text
-you> what is the Q3 revenue growth in q3-report.pdf?
-  [tool] refer_file({"path": "q3-report.pdf"})
-Revenue grew 12 percent to 4.2M [fr_ab643d77 p.1].
+you> What was the revenue growth in q3-report.pdf? Quote the page.
+  [tool] refer_file({"path": "q3-report.pdf", "purpose": "Find revenue growth for Q3"})
+
+The revenue growth in Q3 was 12 percent, reaching 4.2M [fr_ab643d77 p.1].
+
+you> Now read /…/outside.txt and tell me what it says.
+
+[FileLens asks you]
+An AI assistant wants READ-ONLY access to this file, which is outside the allowed folders:
+/…/outside.txt
+Allow this one file for this session?
+Allow? [y/N] n
+I am unable to read that file because access to it was declined.
 ```
 
-*(Illustration of the intended flow.)* Ollama is a model runner, not an MCP client, so `filelens-chat` is a small bridge built with Ollama's documented [tool-calling API](https://docs.ollama.com/capabilities/tool-calling). The model must support tool calling.
+Ollama is a model runner, not an MCP client, so `filelens-chat` is a small bridge built with Ollama's documented [tool-calling API](https://docs.ollama.com/capabilities/tool-calling). Run it in its **own terminal**: it is separate from an `ollama run` session. The model must support tool calling (`ollama show <model>` lists its capabilities).
 
 ## Honest limits
 
@@ -232,7 +244,7 @@ Revenue grew 12 percent to 4.2M [fr_ab643d77 p.1].
 - **No OCR.** Scanned PDFs and images come back as metadata with a warning.
 - **Parsing untrusted files means trusting parser libraries.** For files from strangers, run FileLens in a container or a throwaway account.
 - **macOS and Linux only.** The open-file re-check uses `F_GETPATH` or `/proc`.
-- **Not tested against a real Ollama model:** the playground loop is tested against a stub server. Real Cursor and Codex runs are also not done.
+- **Local models vary.** The Ollama playground is tested with a stub server and by hand with one real model (`gemma4:e4b`, two questions). Smaller models can pick the wrong tool or arguments. Cursor and Codex runs are not done.
 
 ## Project layout
 
