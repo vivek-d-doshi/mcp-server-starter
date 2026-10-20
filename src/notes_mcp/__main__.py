@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 import sys
 
 from notes_mcp.server import create_server
@@ -19,7 +20,8 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--port", type=int, default=8000, help="streamable-http only")
     args = parser.parse_args(argv)
 
-    logging.basicConfig(stream=sys.stderr, level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+    level = os.environ.get("NOTES_LOG_LEVEL", "INFO").upper()
+    logging.basicConfig(stream=sys.stderr, level=level, format="%(levelname)s %(name)s: %(message)s")
     server = create_server()
     if args.transport == "stdio":
         server.run("stdio")

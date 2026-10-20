@@ -37,6 +37,10 @@ pytest -q                   # 21 tests
 python examples/client.py   # starts the server over stdio and calls each tool
 ```
 
+> **Always run inside the virtual environment.** After `source .venv/bin/activate`, `python` and `pytest` are the venv's copies.
+> Outside it (plain `python3`) you may hit `ModuleNotFoundError: mcp` or pick up a different SDK version.
+> Without activating, call it directly: `.venv/bin/python examples/client.py`.
+
 What the example client prints (real output):
 
 ```text
@@ -44,8 +48,8 @@ tools: search_notes, get_note, add_note
 - n1: Why evals come before prompts
 - n5: Staged rollouts for prompt changes
 
-get_note n2 -> MCP tools should be small and typed
-unknown id  -> error: Error executing tool get_note: No note with id 'nope'. Use search_notes to find ids.
+get_note n1 -> Why evals come before prompts
+unknown id  -> expected error: Error executing tool get_note: No note with id 'nope'. Use search_notes to find ids.
 ```
 
 ## What it exposes
@@ -150,6 +154,7 @@ Then ask: *"search my notes for evals"*.
 
 - To keep what `add_note` writes, add `-e NOTES_FILE=~/notes.json`.
 - Without `NOTES_FILE`, the server loads the bundled sample notes in memory and forgets additions on exit.
+- Server logs go to stderr. Set `NOTES_LOG_LEVEL=WARNING` to quiet them.
 
 <details>
 <summary><b>Run it over HTTP instead of stdio</b></summary>
